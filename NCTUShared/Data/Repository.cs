@@ -17,21 +17,10 @@ namespace NCTUShared.Data
             _context = context;
         }
 
-        public IList<TeamMember> GetTeamMembers()
-        {
-            return _context.TeamMembers.OrderBy(tm => tm.Name).ToList();
-        }
-
         public IList<Role> GetRoles()
         {
             return _context.TeamRoles.OrderBy(r => r.Name).ToList();
         }
-
-        public IList<Event> GetEventsList()
-        {
-            return _context.Events.OrderBy(ev => ev.Title).ToList();
-        }
-
        
     }
 }

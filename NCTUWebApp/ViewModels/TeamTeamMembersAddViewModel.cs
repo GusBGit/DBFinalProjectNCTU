@@ -35,10 +35,10 @@ namespace NCTUWebApp.ViewModels
         /// <summary>
         /// Initializes the view model.
         /// </summary>
-        public void Init(Repository repository)
+        public void Init(Repository repository, TeamMembersRepository tmr)
         {
             TeamMemberSelectListItems = new SelectList(
-                repository.GetTeamMembers(),
+                tmr.GetList(),
                 "Id", "Name");
             RoleSelectListItems = new SelectList(
                 repository.GetRoles(),

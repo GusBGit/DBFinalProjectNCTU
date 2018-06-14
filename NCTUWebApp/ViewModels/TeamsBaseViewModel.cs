@@ -21,10 +21,12 @@ namespace NCTUWebApp.ViewModels
         /// <summary>
         /// Initializes the view model.
         /// </summary>
-        public virtual void Init(Repository repository)
+        public virtual void Init(Repository repository,
+            EventsRepository eventsRepository,
+            TeamMembersRepository tmr)
         {
             EventSelectListItems = new SelectList(
-                repository.GetEventsList(),
+                eventsRepository.GetList(),
                 "Id", "Title");
         }
     }

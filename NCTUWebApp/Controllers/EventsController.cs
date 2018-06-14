@@ -1,4 +1,5 @@
-﻿using NCTUShared.Models;
+﻿using NCTUShared.Data;
+using NCTUShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,19 @@ namespace NCTUWebApp.Controllers
     /// <summary>
     /// Controller for the "Event" section of the website.
     /// </summary>
-    public class EventsController : Controller
+    public class EventsController : BaseController
     {
+        private EventsRepository _eventsRepository = null;
+
+        public EventsController()
+        {
+            _eventsRepository = new EventsRepository(Context);
+        }
+
         public ActionResult Index()
         {
             // TODO Get the event list.
-            var events = new List<Event>();
+            var events = _eventsRepository.GetList();
 
             return View(events);
         }
@@ -29,7 +37,7 @@ namespace NCTUWebApp.Controllers
             }
 
             // TODO Get the event.
-            var ev = new Event();
+            var ev = _eventsRepository.Get((int)id);
 
             if (ev == null)
             {
@@ -58,7 +66,8 @@ namespace NCTUWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                // TODO Add the event.
+         
+                _eventsRepository.Add(ev);
 
                 TempData["Message"] = "Your event was successfully added!";
 
@@ -75,8 +84,8 @@ namespace NCTUWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // TODO Get the event.
-            var ev = new Event();
+            var ev = _eventsRepository
+                .Get((int)id, includeRelatedEntities: false);
 
             if (ev == null)
             {
@@ -93,7 +102,7 @@ namespace NCTUWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                // TODO Update the event.
+                _eventsRepository.Update(ev);
 
                 TempData["Message"] = "Your event was successfully updated!";
 
@@ -111,7 +120,7 @@ namespace NCTUWebApp.Controllers
             }
 
             // TODO Get the events.
-            var ev = new Event();
+            var ev = _eventsRepository.Get((int)id);
 
             if (ev == null)
             {
@@ -124,7 +133,7 @@ namespace NCTUWebApp.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            // TODO Delete the event.
+            _eventsRepository.Delete(id);
 
             TempData["Message"] = "Your event was successfully deleted!";
 
@@ -138,17 +147,17 @@ namespace NCTUWebApp.Controllers
         /// <param name="ev">The event to validate.</param>
         private void ValidateEvent(Event ev)
         {
-            //// If there aren't any "Title" field validation errors...
-            //if (ModelState.IsValidField("Title"))
-            //{
-            //    // Then make sure that the provided title is unique.
-            //    // TODO Call method to check if the title is available.
-            //    if (false)
-            //    {
-            //        ModelState.AddModelError("Title",
-            //            "The provided Title is in use by another event.");
-            //    }
-            //}
+            // If there aren't any "Title" field validation errors...
+            if (ModelState.IsValidField("Title"))
+            {
+                // Then make sure that the provided title is unique.
+                if (_eventsRepository.EventHasTitle(
+                        ev.Id, ev.Title))
+                {
+                    ModelState.AddModelError("Title",
+                        "The provided Title is in use by another event.");
+                }
+            }
         }
     }
 }

@@ -77,7 +77,10 @@
     <Compile Include="Data\BaseRepository.cs" />
     <Compile Include="Data\Context.cs" />
     <Compile Include="Data\DatabaseInitializer.cs" />
+    <Compile Include="Data\EventsRepository.cs" />
+    <Compile Include="Data\Queries\GetTeamQuery.cs" />
     <Compile Include="Data\Repository.cs" />
+    <Compile Include="Data\TeamMembersRepository.cs" />
     <Compile Include="Data\TeamsRepository.cs" />
     <Compile Include="Data\TeamTeamMemberRepository.cs" />
     <Compile Include="Migrations\201806141647480_InitialCreate.cs" />
@@ -112,7 +115,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Commands\" />
-    <Folder Include="Data\Queries\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

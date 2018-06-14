@@ -32,12 +32,14 @@ namespace NCTUWebApp.ViewModels
         /// <summary>
         /// Initializes the view model.
         /// </summary>
-        public override void Init(Repository repository)
+        public override void Init(Repository repository,
+            EventsRepository evRep,
+            TeamMembersRepository tmr)
         {
-            base.Init(repository);
+            base.Init(repository, evRep, tmr);
 
             TeamMemberSelectListItems = new SelectList(
-                repository.GetTeamMembers(),
+                tmr.GetList(),
                 "Id", "Name");
             RoleSelectListItems = new SelectList(
                 repository.GetRoles(), 

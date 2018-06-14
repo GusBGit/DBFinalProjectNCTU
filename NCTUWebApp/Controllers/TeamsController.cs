@@ -18,10 +18,14 @@ namespace NCTUWebApp.Controllers
     public class TeamsController : BaseController
     {
         private TeamsRepository _teamsRepository = null;
+        private EventsRepository _eventsRepository = null;
+        private TeamMembersRepository _teamMembersRepository = null;
 
         public TeamsController()
         {
             _teamsRepository = new TeamsRepository(Context);
+            _eventsRepository = new EventsRepository(Context);
+            _teamMembersRepository = new TeamMembersRepository(Context);
         }
 
         public ActionResult Index()
@@ -55,7 +59,7 @@ namespace NCTUWebApp.Controllers
         {
             var viewModel = new TeamsAddViewModel();
 
-            viewModel.Init(Repository);
+            viewModel.Init(Repository, _eventsRepository, _teamMembersRepository);
 
             return View(viewModel);
         }
@@ -77,7 +81,7 @@ namespace NCTUWebApp.Controllers
                 return RedirectToAction("Detail", new { id = team.Id });
             }
 
-            viewModel.Init(Repository);
+            viewModel.Init(Repository, _eventsRepository, _teamMembersRepository);
 
             return View(viewModel);
         }
@@ -101,7 +105,7 @@ namespace NCTUWebApp.Controllers
             {
                 Team = team
             };
-            viewModel.Init(Repository);
+            viewModel.Init(Repository, _eventsRepository, _teamMembersRepository);
 
             return View(viewModel);
         }
@@ -122,7 +126,7 @@ namespace NCTUWebApp.Controllers
                 return RedirectToAction("Detail", new { id = team.Id });
             }
 
-            viewModel.Init(Repository);
+            viewModel.Init(Repository, _eventsRepository, _teamMembersRepository);
 
             return View(viewModel);
         }

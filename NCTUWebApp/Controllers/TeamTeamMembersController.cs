@@ -18,11 +18,13 @@ namespace NCTUWebApp.Controllers
     {
         private TeamsRepository _teamsRepository = null;
         private TeamTeamMemberRepository _teamTeamMemberRepository = null;
+        private TeamMembersRepository _teamMembersRepository = null;
 
         public TeamTeamMembersController()
         {
             _teamsRepository = new TeamsRepository(Context);
             _teamTeamMemberRepository = new TeamTeamMemberRepository(Context);
+            _teamMembersRepository = new TeamMembersRepository(Context);
         }
 
         public ActionResult Add(int teamId)
@@ -40,7 +42,7 @@ namespace NCTUWebApp.Controllers
                 Team = team
             };
 
-            viewModel.Init(Repository);
+            viewModel.Init(Repository, _teamMembersRepository);
 
             return View(viewModel);
         }
@@ -66,7 +68,7 @@ namespace NCTUWebApp.Controllers
             }
             
             viewModel.Team = _teamsRepository.Get(viewModel.TeamId);
-            viewModel.Init(Repository);
+            viewModel.Init(Repository, _teamMembersRepository);
 
             return View(viewModel);
         }

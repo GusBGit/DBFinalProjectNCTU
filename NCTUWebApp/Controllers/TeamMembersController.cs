@@ -1,4 +1,5 @@
-﻿using NCTUShared.Models;
+﻿using NCTUShared.Data;
+using NCTUShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,18 @@ namespace NCTUWebApp.Controllers
     /// <summary>
     /// Controller for the "TeamMembers" section of the website.
     /// </summary>
-    public class TeamMembersController : Controller
+    public class TeamMembersController : BaseController
     {
+        private TeamMembersRepository _teamMembersRepository = null;
+
+        public TeamMembersController()
+        {
+            _teamMembersRepository = new TeamMembersRepository(Context);
+        }
+
         public ActionResult Index()
         {
-            // TODO Get the team members list.
-            var teamMembers = new List<TeamMember>();
+            var teamMembers = _teamMembersRepository.GetList();
 
             return View(teamMembers);
         }
@@ -27,9 +34,8 @@ namespace NCTUWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            // TODO Get the team member.
-            var teamMember = new TeamMember();
+            
+            var teamMember = _teamMembersRepository.Get((int)id);
 
             if (teamMember == null)
             {
@@ -59,7 +65,8 @@ namespace NCTUWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                // TODO Add the team member.
+
+                _teamMembersRepository.Add(teamMember);
 
                 TempData["Message"] = "Your team member was successfully added!";
 
@@ -77,7 +84,8 @@ namespace NCTUWebApp.Controllers
             }
 
             // TODO Get the team member.
-            var teamMember = new TeamMember();
+            var teamMember = _teamMembersRepository.Get((int)id, 
+                includeRelatedEntities: false);
 
             if (teamMember == null)
             {
@@ -94,7 +102,7 @@ namespace NCTUWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                // TODO Update the team member.
+                _teamMembersRepository.Update(teamMember);
 
                 TempData["Message"] = "Your team member was successfully updated!";
 
@@ -110,9 +118,8 @@ namespace NCTUWebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            // TODO Get the team member.
-            var teamMember = new TeamMember();
+            
+            var teamMember = _teamMembersRepository.Get((int)id);
 
             if (teamMember == null)
             {
@@ -125,7 +132,7 @@ namespace NCTUWebApp.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            // TODO Delete the team member.
+            _teamMembersRepository.Delete(id);
 
             TempData["Message"] = "Your team member was successfully deleted!";
 
@@ -139,17 +146,18 @@ namespace NCTUWebApp.Controllers
         /// <param name="teamMember">The team member to validate.</param>
         private void ValidateTeamMember(TeamMember teamMember)
         {
-            //// If there aren't any "Name" field validation errors...
-            //if (ModelState.IsValidField("Name"))
-            //{
-            //    // Then make sure that the provided name is unique.
-            //    // TODO Call method to check if the team member name is available.
-            //    if (false)
-            //    {
-            //        ModelState.AddModelError("Name",
-            //            "The provided Name is in use by another team member.");
-            //    }
-            //}
+            // If there aren't any "Name" field validation errors...
+            if (ModelState.IsValidField("Name"))
+            {
+                // Then make sure that the provided name is unique.
+                // TODO Call method to check if the team member name is available.
+                if (_teamMembersRepository.TeamMemberHasName(
+                        teamMember.Id, teamMember.Name))
+                {
+                    ModelState.AddModelError("Name",
+                        "The provided Name is in use by another team member.");
+                }
+            }
         }
     }
 }
