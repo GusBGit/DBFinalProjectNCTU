@@ -1,0 +1,58 @@
+﻿@model NCTUWebApp.ViewModels.TeamsAddViewModel
+
+@{
+    ViewBag.Title = "Add Team";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary("The following errors were found:", new { @class = "alert alert-danger" })
+
+    <h3>Main Information</h3>
+
+    @Html.Partial("_TeamForm")
+
+    <h3>First Team Member</h3>
+
+    <p>Select a team member and role to add to this team. 
+        Additional team members can be added once the team has been saved.</p>
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.TeamMemberId, new { @class = "control-label" })
+                @Html.DropDownListFor(m => m.TeamMemberId,
+                    Model.TeamMemberSelectListItems, "", new { @class = "form-control" })
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.RoleId, new { @class = "control-label" })
+                @Html.DropDownListFor(m => m.RoleId,
+                    Model.RoleSelectListItems, "", new { @class = "form-control" })
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pad-top">
+                <button type="submit" class="btn btn-success btn-lg margin-right">
+                    <span class="glyphicon glyphicon-save"></span> Save
+                </button>
+                <a href="@Url.Action("Index")" class="btn btn-warning btn-lg">
+                    <span class="glyphicon glyphicon-remove"></span> Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+}

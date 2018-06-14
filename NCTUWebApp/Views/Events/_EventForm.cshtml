@@ -1,0 +1,37 @@
+﻿@model NCTUShared.Models.Event 
+
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(m => m.Title, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Date, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.Date, "{0:d}", new { @class = "form-control datepicker" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.TeamLimit, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.TeamLimit, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.TeamSizeLimit, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.TeamSizeLimit, new { @class = "form-control" })
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description, new { @class = "control-label" })
+            @Html.TextAreaFor(m => m.Description, 14, 20, new { @class = "form-control" })
+        </div>
+
+    </div>
+
+</div>

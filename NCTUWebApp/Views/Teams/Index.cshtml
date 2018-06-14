@@ -1,0 +1,41 @@
+﻿@model List<NCTUShared.Models.Team>
+
+@{
+    ViewBag.Title = "Teams";
+}
+
+@Html.Partial("_Message")
+
+<h2>@ViewBag.Title</h2>
+
+<div class="pull-right">
+    <a href="@Url.Action("Add")" class="btn btn-primary btn-lg">
+        <span class="glyphicon glyphicon-plus"></span> Add Team
+    </a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Team</th>
+            <th>Number of Team Members</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model)
+        {
+            <tr>
+                <td>@team.DisplayText</td>
+                <td>@team.TeamMembers.Count()</td>
+                <td>
+                    <div class="pull-right">
+                        <a href="@Url.Action("Detail", new { id = team.Id })" class="btn btn-primary btn-xs margin-right">
+                            <span class="glyphicon glyphicon-info-sign"></span><span class="hidden-xs"> Detail</span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

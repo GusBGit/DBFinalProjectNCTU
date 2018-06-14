@@ -1,0 +1,53 @@
+﻿@model NCTUShared.Models.Event
+
+@{
+    ViewBag.Title = "Event Status";
+}
+
+@Html.Partial("_Message")
+
+<h2>@Model.Title</h2>
+
+@if (!string.IsNullOrWhiteSpace(Model.Description))
+{
+    <p>@Model.Description</p>
+}
+
+<h3>Teams</h3>
+
+@if (Model.Teams.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Number of Team Members</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var team in Model.Teams)
+            {
+                <tr>
+                    <td>@team.DisplayText</td>
+                    <td>@team.TeamMembers.Count()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>This event doesn't contain any teams.</p>
+}
+
+<div class="pad-top">
+    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-lg margin-right">
+        <span class="glyphicon glyphicon-edit"></span> Edit
+    </a>
+    <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-danger btn-lg margin-right">
+        <span class="glyphicon glyphicon-trash"></span> Delete
+    </a>
+    <a href="@Url.Action("Index")" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-step-backward"></span> Back
+    </a>
+</div>

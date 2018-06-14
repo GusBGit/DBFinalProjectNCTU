@@ -1,0 +1,50 @@
+﻿@model NCTUShared.Models.TeamMember 
+
+@{
+    ViewBag.Title = "Team Member Detail";
+}
+
+@Html.Partial("_Message")
+
+<h2>@Model.Name</h2>
+
+<h3>Teams</h3>
+
+@if (Model.Teams.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Number of Team Members</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var team in Model.Teams)
+            {
+                <tr>
+                    <td>@team.Team.DisplayText</td>
+                    <td>@team.Team.TeamMembers.Count()</td>
+                    <td>@team.Role.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>This player isn't associated with any teams.</p>
+}
+
+<div class="pad-top">
+    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-lg margin-right">
+        <span class="glyphicon glyphicon-edit"></span> Edit
+    </a>
+    <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-danger btn-lg margin-right">
+        <span class="glyphicon glyphicon-trash"></span> Delete
+    </a>
+    <a href="@Url.Action("Index")" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-step-backward"></span> Back
+    </a>
+</div>

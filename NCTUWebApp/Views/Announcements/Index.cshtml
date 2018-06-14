@@ -1,0 +1,44 @@
+﻿@model List<NCTUShared.Models.Announcement>
+
+@{
+    ViewBag.Title = "Announcements";
+}
+
+@Html.Partial("_Message")
+
+<h2>@ViewBag.Title</h2>
+
+<div class="pull-right">
+    <a href="@Url.Action("Add")" class="btn btn-primary btn-lg">
+        <span class="glyphicon glyphicon-plus"></span> Add Announcement
+    </a>
+</div>
+
+<table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Posted Time</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ev in Model)
+            {
+                <tr>
+                    <th>@ev.Title</th>
+                    <td>@ev.PostedTime</td>
+                    <td>
+                        <div class="pull-right">
+                            <a href="@Url.Action("Detail", new { id = ev.Id })" class="btn btn-primary btn-xs margin-right">
+                                <span class="glyphicon glyphicon-info-sign"></span><span class="hidden-xs"> Detail</span>
+                            </a>
+                            <a href="@Url.Action("Delete", new { id = ev.Id })" class="btn btn-danger btn-xs margin-right">
+                                <span class="glyphicon glyphicon-alert"></span><span class="hidden-xs"> Delete</span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+</table>

@@ -1,0 +1,20 @@
+﻿@model NCTUWebApp.ViewModels.TeamsBaseViewModel
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Team.EventId, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.Team.EventId,
+            Model.EventSelectListItems, "", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Team.TeamName, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.Team.TeamName, new { @class = "form-control" })
+        </div>
+
+    </div>
+
+</div>

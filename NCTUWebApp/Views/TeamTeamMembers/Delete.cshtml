@@ -1,0 +1,57 @@
+﻿@model NCTUShared.Models.TeamTeamMember
+
+@{
+    ViewBag.Title = "Delete Team Member";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete the following team member?
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+
+        <div class="row">
+            <div class="col-xs-4 col-sm-3">
+                <label>Team</label>
+            </div>
+            <div class="col-xs-8 col-sm-9">
+                @Model.Team.DisplayText
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4 col-sm-3">
+                @Html.LabelFor(m => m.TeamMember.Name)
+            </div>
+            <div class="col-xs-8 col-sm-9">
+                @Model.TeamMember.Name
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4 col-sm-3">
+                @Html.LabelFor(m => m.Role.Name)
+            </div>
+            <div class="col-xs-8 col-sm-9">
+                @Model.Role.Name
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            <div class="pad-top">
+                <button type="submit" class="btn btn-danger btn-lg margin-right">
+                    <span class="glyphicon glyphicon-trash"></span> Delete
+                </button>
+                <a href="@Url.Action("Detail", "Teams", new { id = Model.TeamId })" class="btn btn-warning btn-lg">
+                    <span class="glyphicon glyphicon-remove"></span> Cancel
+                </a>
+            </div>
+        }
+
+    </div>
+
+</div>

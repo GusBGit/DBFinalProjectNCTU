@@ -1,0 +1,45 @@
+﻿@model List<NCTUShared.Models.Event> 
+
+@{
+    ViewBag.Title = "Events";
+}
+
+@Html.Partial("_Message")
+
+<h2>@ViewBag.Title</h2>
+
+<div class="pull-right">
+    <a href="@Url.Action("Add")" class="btn btn-primary btn-lg">
+        <span class="glyphicon glyphicon-plus"></span> Add Event
+    </a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Team Limit</th>
+            <th>Team Size Limit</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ev in Model)
+        {
+        <tr>
+            <td>@ev.Title</td>
+            <td>@ev.Date</td>
+            <td>@ev.TeamLimit</td>
+            <td>@ev.TeamSizeLimit</td>
+            <td>
+                <div class="pull-right">
+                    <a href="@Url.Action("Detail", new { id = ev.Id })" class="btn btn-primary btn-xs margin-right">
+                        <span class="glyphicon glyphicon-info-sign"></span><span class="hidden-xs"> Detail</span>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

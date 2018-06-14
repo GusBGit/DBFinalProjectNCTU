@@ -1,0 +1,57 @@
+﻿@{ 
+    var applicationName = "NCTU Sports Events";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - @applicationName</title>
+    <link href="~/Content/bootstrap-lumen.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    @RenderSection("Scripts", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink(applicationName, "Index", "Teams", new { }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Announcements" ? "active" : "")">@Html.ActionLink("Home", "Index", "Announcements")</li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Teams" ? "active" : "")">@Html.ActionLink("Teams", "Index", "Teams")</li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Events" ? "active" : "")">@Html.ActionLink("Events", "Index", "Events")</li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "TeamMembers" ? "active" : "")">@Html.ActionLink("Team Members", "Index", "TeamMembers")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - @applicationName</p>
+        </footer>
+    </div>
+
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script>
+        $('input.datepicker').datepicker({
+            format: 'm/d/yyyy'
+        });
+    </script>
+</body>
+</html>
