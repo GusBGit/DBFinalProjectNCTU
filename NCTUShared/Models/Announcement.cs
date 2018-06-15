@@ -10,6 +10,10 @@ namespace NCTUShared.Models
 {
     public class Announcement
     {
+        public Announcement()
+        {
+            PostedTime = DateTime.Now;
+        }
         /// <summary>
         /// Represents an announcement.
         /// </summary>

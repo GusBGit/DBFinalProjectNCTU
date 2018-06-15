@@ -1,4 +1,5 @@
-﻿using NCTUShared.Models;
+﻿using NCTUShared.Data;
+using NCTUShared.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,20 @@ using System.Web.Mvc;
 
 namespace NCTUWebApp.Controllers
 {
-    public class AnnouncementsController : Controller
+    public class AnnouncementsController : BaseController
     {
+        private AnnouncementsRepository _announcementsRepository = null;
+
+        public AnnouncementsController()
+        {
+            _announcementsRepository = new AnnouncementsRepository(Context);
+        }
+
         // GET: Announcements
         public ActionResult Index()
         {
             // TODO Get the announcement list.
-            var anncs = new List<Announcement>();
+            var anncs = _announcementsRepository.GetList();
 
             return View(anncs);
         }
@@ -25,8 +33,7 @@ namespace NCTUWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // TODO Get the announcement.
-            var ann = new Announcement();
+            var ann = _announcementsRepository.Get((int)id);
 
             if (ann == null)
             {
@@ -50,7 +57,7 @@ namespace NCTUWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                // TODO Add the announcement.
+                _announcementsRepository.Add(ann);
 
                 TempData["Message"] = "Your announcement was successfully added!";
 
@@ -67,8 +74,8 @@ namespace NCTUWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // TODO Get the announcement.
-            var ann = new Announcement();
+            var ann = _announcementsRepository.Get((int)id,
+                includeRelatedEntities: false);
 
             if (ann == null)
             {
@@ -85,7 +92,7 @@ namespace NCTUWebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                // TODO Update the announcement.
+                _announcementsRepository.Update(ann);
 
                 TempData["Message"] = "Your announcement was successfully updated!";
 
@@ -102,8 +109,7 @@ namespace NCTUWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // TODO Get the announcement.
-            var ann = new Announcement();
+            var ann = _announcementsRepository.Get((int)id);
 
             if (ann == null)
             {
@@ -116,7 +122,7 @@ namespace NCTUWebApp.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            // TODO Delete the announcement.
+            _announcementsRepository.Delete(id);
 
             TempData["Message"] = "Your announcement was successfully deleted!";
 
@@ -130,17 +136,18 @@ namespace NCTUWebApp.Controllers
         /// <param name="ev">The announcement to validate.</param>
         private void ValidateAnnouncement(Announcement ann)
         {
-            //// If there aren't any "Title" field validation errors...
-            //if (ModelState.IsValidField("Title"))
-            //{
-            //    // Then make sure that the provided title is unique.
-            //    // TODO Call method to check if the title is available.
-            //    if (false)
-            //    {
-            //        ModelState.AddModelError("Title",
-            //            "The provided Title is in use by another announcement.");
-            //    }
-            //}
+            // If there aren't any "Title" field validation errors...
+            if (ModelState.IsValidField("Title"))
+            {
+                // Then make sure that the provided title is unique.
+                // TODO Call method to check if the title is available.
+                if (_announcementsRepository.AnnouncementHasTitle(
+                        ann.Id, ann.Title))
+                {
+                    ModelState.AddModelError("Title",
+                        "The provided Title is in use by another announcement.");
+                }
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace NCTUShared.Data
     /// Custom database initializer class used to populate
     /// the database with seed data.
     /// </summary>
-    internal class DatabaseInitializer : DropCreateDatabaseAlways<Context>
+    internal class DatabaseInitializer : DropCreateDatabaseIfModelChanges<Context>
     {
         protected override void Seed(Context context)
         {
@@ -176,6 +176,11 @@ namespace NCTUShared.Data
             team9.AddTeamMember(tmJeffSmith, roleCoach);
             team9.AddTeamMember(tmJeffSmith, rolePlayer);
             context.Teams.Add(team9);
+
+            context.Announcements.Add(annc1);
+            context.Announcements.Add(annc2);
+            context.Announcements.Add(annc3);
+            context.Announcements.Add(annc4);
 
             context.SaveChanges();
         }

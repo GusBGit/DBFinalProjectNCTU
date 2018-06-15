@@ -15,6 +15,7 @@ namespace NCTUShared.Data
         public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<Role> TeamRoles { get; set; }
         public DbSet<TeamTeamMember> TeamTeamMembers { get; set;}
+        public DbSet<Announcement> Announcements { get; set; }
 
         public Context()
             : base("Context")
@@ -22,21 +23,21 @@ namespace NCTUShared.Data
             //// This call to the SetInitializer method is used 
             //// to configure EF to use our custom database initializer class
             //// which contains our app's database seed data.
-            ////Database.SetInitializer(new DatabaseInitializer());
+            //Database.SetInitializer(new DatabaseInitializer());
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            // Removing the pluralizing table name convention 
-            // so our table names will use our entity class singular names.
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //    // Removing the pluralizing table name convention 
+        //    // so our table names will use our entity class singular names.
+        //    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            // Using the fluent API to configure the precision and scale
-            // for the Team.AverageRating property.
-            //modelBuilder.Entity<Team>()
-            //    .Property(cb => cb.AverageRating)
-            //    .HasPrecision(5, 2);
-        }
+        //    // Using the fluent API to configure the precision and scale
+        //    // for the Team.AverageRating property.
+        //    //modelBuilder.Entity<Team>()
+        //    //    .Property(cb => cb.AverageRating)
+        //    //    .HasPrecision(5, 2);
+        //}
     }
 }

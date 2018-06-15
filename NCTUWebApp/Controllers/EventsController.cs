@@ -119,7 +119,6 @@ namespace NCTUWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            // TODO Get the events.
             var ev = _eventsRepository.Get((int)id);
 
             if (ev == null)
