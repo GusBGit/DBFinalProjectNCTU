@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using NCTUShared.Models;
 using NCTUWebApp.Models;
+using CaptchaMvc.HtmlHelpers;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace NCTUWebApp.Controllers
 {
@@ -18,6 +20,7 @@ namespace NCTUWebApp.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext _context = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -69,7 +72,12 @@ namespace NCTUWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            if (!this.IsCaptchaValid(""))
+            {
+                ViewBag.error = "Invalid Captcha!";
+                return View(model);
+
+            } else if (!ModelState.IsValid)
             {
                 return View(model);
             }
@@ -150,10 +158,16 @@ namespace NCTUWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!this.IsCaptchaValid(""))
+            {
+                ViewBag.error = "Invalid Captcha!";
+                return View(model);
+
+            } else if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { StudentID = model.StudentID, UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -451,6 +465,151 @@ namespace NCTUWebApp.Controllers
                 return Redirect(returnUrl);
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        //GET: Roles
+        public ActionResult Roles()
+        {
+            return View(_context.Roles.ToList());
+        }
+
+        public ActionResult CreateRole()
+        {
+
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult CreateRole(FormCollection collection)
+        {
+            try
+            {
+                _context.Roles.Add(new IdentityRole()
+                {
+                    Name = collection["RoleName"]
+                });
+                _context.SaveChanges();
+                ViewBag.ResultMessage = "Role created successfully!";
+                return View("CreateRole");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        public ActionResult DeleteRole(string RoleName)
+        {
+            var thisRole = _context.Roles.Where(r => r.Name.Equals(RoleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            _context.Roles.Remove(thisRole);
+            _context.SaveChanges();
+            return RedirectToAction("Roles");
+        }
+
+        // GET: /Roles/Edit/5
+        public ActionResult EditRole(string roleName)
+        {
+            var thisRole = _context.Roles.Where(r => r.Name.Equals(roleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+            return View(thisRole);
+        }
+
+        //
+        // POST: /Roles/Edit/
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRole(Microsoft.AspNet.Identity.EntityFramework.IdentityRole role)
+        {
+            try
+            {
+                _context.Entry(role).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+
+                return RedirectToAction("Roles");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        public ActionResult ManageUsers()
+        {
+            // prepopulat roles for the view dropdown
+            var list = _context.Roles.OrderBy(r => r.Name).ToList().Select(rr =>
+            new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            ViewBag.Roles = list;
+            return View();
+        }
+
+        public ActionResult ManageUserRoles()
+        {
+            // prepopulat roles for the view dropdown
+            var list = _context.Roles.OrderBy(r => r.Name).ToList().Select(rr =>
+
+new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            ViewBag.Roles = list;
+            return View("ManageUsers");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RoleAddToUser(string UserName, string RoleName)
+        {
+            ApplicationUser user = _context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(_context));
+            manager.AddToRole(user.Id, RoleName);
+
+            //ViewBag.ResultMessage = "Role created successfully !";
+
+            // prepopulat roles for the view dropdown
+            var list = _context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            ViewBag.Roles = list;
+
+            return View("ManageUsers");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult GetRoles(string UserName)
+        {
+            if (!string.IsNullOrWhiteSpace(UserName))
+            {
+                ApplicationUser user = _context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(_context));
+
+                ViewBag.RolesForThisUser = manager.GetRoles(user.Id);
+
+                // prepopulat roles for the view dropdown
+                var list = _context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+                ViewBag.Roles = list;
+            }
+
+            return View("ManageUsers");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRoleForUser(string UserName, string RoleName)
+        {
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(_context));
+
+            ApplicationUser user = _context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+            if (manager.IsInRole(user.Id, RoleName))
+            {
+                manager.RemoveFromRole(user.Id, RoleName);
+                ViewBag.ResultMessage = "Role removed from this user successfully !";
+            }
+            else
+            {
+                ViewBag.ResultMessage = "This user doesn't belong to selected role.";
+            }
+            // prepopulat roles for the view dropdown
+            var list = _context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            ViewBag.Roles = list;
+
+            return View("ManageUsers");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

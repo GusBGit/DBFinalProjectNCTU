@@ -123,3 +123,6 @@ C:\Users\Gustav Björklund\Desktop\LastFinalGO\NCTUWebApp\bin\Microsoft.CodeDom.
 C:\Users\Gustav Björklund\Desktop\LastFinalGO\NCTUWebApp\obj\Debug\NCTUWebApp.csproj.CopyComplete
 C:\Users\Gustav Björklund\Desktop\LastFinalGO\NCTUWebApp\obj\Debug\NCTUWebApp.dll
 C:\Users\Gustav Björklund\Desktop\LastFinalGO\NCTUWebApp\obj\Debug\NCTUWebApp.pdb
+C:\Users\Gustav Björklund\Desktop\LastFinalGO\NCTUWebApp\bin\CaptchaMvc.dll
+C:\Users\Gustav Björklund\Desktop\LastFinalGO\NCTUWebApp\bin\CaptchaMvc.pdb
+C:\Users\Gustav Björklund\Desktop\LastFinalGO\NCTUWebApp\bin\CaptchaMvc.xml

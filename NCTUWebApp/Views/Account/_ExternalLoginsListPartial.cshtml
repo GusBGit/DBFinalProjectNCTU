@@ -1,6 +1,6 @@
 ﻿@model NCTUWebApp.Models.ExternalLoginListViewModel
 @using Microsoft.Owin.Security
-
+@using CaptchaMvc.HtmlHelpers
 
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
