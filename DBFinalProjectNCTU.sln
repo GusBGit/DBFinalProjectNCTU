@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicBookLibraryManager", "ComicBookLibraryManager\ComicBookLibraryManager.csproj", "{D30BE089-4B9E-4532-ABE8-5F33EF03C585}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleCRUD", "ComicBookLibraryManager\ConsoleCRUD.csproj", "{D30BE089-4B9E-4532-ABE8-5F33EF03C585}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCTUShared", "NCTUShared\NCTUShared.csproj", "{5F900CE7-DEAC-4485-9E91-48337A167FEE}"
 EndProject

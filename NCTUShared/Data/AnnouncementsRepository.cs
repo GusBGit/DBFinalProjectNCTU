@@ -31,7 +31,7 @@ namespace NCTUShared.Data
         public override IList<Announcement> GetList()
         {
             return Context.Announcements
-                .OrderBy(a => a.PostedTime)
+                .OrderByDescending(a => a.PostedTime)
                 .ToList();
         }
 

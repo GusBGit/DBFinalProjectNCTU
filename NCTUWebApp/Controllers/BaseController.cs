@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace NCTUWebApp.Controllers
 {
+    [Authorize]
     public abstract class BaseController : Controller
     {
         private bool _disposed = false;

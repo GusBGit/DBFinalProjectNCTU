@@ -22,7 +22,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink(applicationName, "Index", "Teams", new { }, new { @class = "navbar-brand" })
+                @Html.ActionLink(applicationName, "Index", "Announcements", new { }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -30,6 +30,9 @@
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Teams" ? "active" : "")">@Html.ActionLink("Teams", "Index", "Teams")</li>
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Events" ? "active" : "")">@Html.ActionLink("Events", "Index", "Events")</li>
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "TeamMembers" ? "active" : "")">@Html.ActionLink("Team Members", "Index", "TeamMembers")</li>
+                    <div class="pull-right">
+                        @Html.Partial("_LoginPartial")
+                    </div>
                 </ul>
             </div>
         </div>

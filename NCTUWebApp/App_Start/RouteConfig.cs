@@ -22,7 +22,7 @@ namespace NCTUWebApp
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Teams", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Announcements", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
