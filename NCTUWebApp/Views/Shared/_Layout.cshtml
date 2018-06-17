@@ -30,9 +30,9 @@
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Teams" ? "active" : "")">@Html.ActionLink("Teams", "Index", "Teams")</li>
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Events" ? "active" : "")">@Html.ActionLink("Events", "Index", "Events")</li>
                     <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "TeamMembers" ? "active" : "")">@Html.ActionLink("Team Members", "Index", "TeamMembers")</li>
-                    <div class="pull-right">
+                    <li class="pull-right">
                         @Html.Partial("_LoginPartial")
-                    </div>
+                    </li>
                 </ul>
             </div>
         </div>

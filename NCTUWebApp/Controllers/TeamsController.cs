@@ -69,16 +69,19 @@ namespace NCTUWebApp.Controllers
         {
             ValidateTeam(viewModel.Team);
 
-            if (ModelState.IsValid)
+            if (TempData["Error"] == null)
             {
-                var team = viewModel.Team;
-                team.AddTeamMember(viewModel.TeamMemberId, viewModel.RoleId);
+                if (ModelState.IsValid)
+                {
+                    var team = viewModel.Team;
+                    team.AddTeamMember(viewModel.TeamMemberId, viewModel.RoleId);
 
-                _teamsRepository.Add(team);
+                    _teamsRepository.Add(team);
 
-                TempData["Message"] = "Your team was successfully added!";
+                    TempData["Message"] = "Your team was successfully added!";
 
-                return RedirectToAction("Detail", new { id = team.Id });
+                    return RedirectToAction("Detail", new { id = team.Id });
+                }
             }
 
             viewModel.Init(Repository, _eventsRepository, _teamMembersRepository);
@@ -165,6 +168,11 @@ namespace NCTUWebApp.Controllers
         /// <param name="team">The team to validate.</param>
         private void ValidateTeam(Team team)
         {
+            if (team.Event.Teams.Count() >= team.Event.TeamLimit)
+            {
+                TempData["Error"] = "You can't add more teams, the event is full!";
+            }
+
             // If there aren't any "EventId" and "TeamName" field validation errors...
             if (ModelState.IsValidField("Team.EventId") &&
                 ModelState.IsValidField("Team.TeamName"))

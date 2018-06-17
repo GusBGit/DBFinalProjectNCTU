@@ -150,7 +150,6 @@ namespace NCTUWebApp.Controllers
             if (ModelState.IsValidField("Name"))
             {
                 // Then make sure that the provided name is unique.
-                // TODO Call method to check if the team member name is available.
                 if (_teamMembersRepository.TeamMemberHasName(
                         teamMember.Id, teamMember.Name))
                 {

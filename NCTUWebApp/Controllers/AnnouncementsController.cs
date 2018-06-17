@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace NCTUWebApp.Controllers
 {
+    [Authorize(Roles = "Manager,Admin")]
     public class AnnouncementsController : BaseController
     {
         private AnnouncementsRepository _announcementsRepository = null;
@@ -19,6 +20,7 @@ namespace NCTUWebApp.Controllers
         }
 
         // GET: Announcements
+        [AllowAnonymous]
         public ActionResult Index()
         {
             // TODO Get the announcement list.
@@ -26,6 +28,7 @@ namespace NCTUWebApp.Controllers
 
             return View(anncs);
         }
+        [AllowAnonymous]
         public ActionResult Detail(int? id)
         {
             if (id == null)

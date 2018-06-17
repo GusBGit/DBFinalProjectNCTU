@@ -1,5 +1,6 @@
 ﻿using NCTUShared.Data;
 using NCTUShared.Models;
+using NCTUWebApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,19 @@ namespace NCTUWebApp.Controllers
     /// <summary>
     /// Controller for the "Event" section of the website.
     /// </summary>
+    [Authorize(Roles="Admin,Manager")]
     public class EventsController : BaseController
     {
         private EventsRepository _eventsRepository = null;
+        private TeamsRepository _teamsRepository = null;
 
         public EventsController()
         {
             _eventsRepository = new EventsRepository(Context);
+            _teamsRepository = new TeamsRepository(Context);
         }
 
+        [AllowAnonymous]
         public ActionResult Index()
         {
             // TODO Get the event list.
@@ -29,6 +34,7 @@ namespace NCTUWebApp.Controllers
             return View(events);
         }
 
+        [AllowAnonymous]
         public ActionResult Detail(int? id)
         {
             if (id == null)
@@ -36,7 +42,9 @@ namespace NCTUWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            var viewModel = new EventsBaseViewModel();
             // TODO Get the event.
+
             var ev = _eventsRepository.Get((int)id);
 
             if (ev == null)
@@ -44,12 +52,15 @@ namespace NCTUWebApp.Controllers
                 return HttpNotFound();
             }
 
-            // Sort the teams.
-            ev.Teams = ev.Teams
-                .OrderByDescending(cb => cb.TeamName)
-                .ToList();
+            viewModel.Init(_eventsRepository, _teamsRepository, (int)id);
 
-            return View(ev);
+
+            // Sort the teams.
+            viewModel.Teams = viewModel.Teams
+                .OrderBy(cb => cb.TeamName)
+                .ToList();
+            
+            return View(viewModel);
         }
 
         public ActionResult Add()

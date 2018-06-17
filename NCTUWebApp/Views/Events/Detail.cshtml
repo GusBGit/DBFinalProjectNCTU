@@ -1,4 +1,4 @@
-﻿@model NCTUShared.Models.Event
+﻿@model NCTUWebApp.ViewModels.EventsBaseViewModel
 
 @{
     ViewBag.Title = "Event Status";
@@ -6,11 +6,11 @@
 
 @Html.Partial("_Message")
 
-<h2>@Model.Title</h2>
+<h2>@Model.Event.Title</h2>
 
-@if (!string.IsNullOrWhiteSpace(Model.Description))
+@if (!string.IsNullOrWhiteSpace(Model.Event.Description))
 {
-    <p>@Model.Description</p>
+    <p>@Model.Event.Description</p>
 }
 
 <h3>Teams</h3>
@@ -28,8 +28,8 @@
             @foreach (var team in Model.Teams)
             {
                 <tr>
-                    <td>@team.DisplayText</td>
-                    <td>@team.TeamMembers.Count()</td>
+                    <td>@team.TeamName</td>
+                    <td>@Model.NumberOfTeamMembers(team.Id)</td>
                 </tr>
             }
         </tbody>
@@ -39,15 +39,17 @@ else
 {
     <p>This event doesn't contain any teams.</p>
 }
-
-<div class="pad-top">
-    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-lg margin-right">
-        <span class="glyphicon glyphicon-edit"></span> Edit
-    </a>
-    <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-danger btn-lg margin-right">
-        <span class="glyphicon glyphicon-trash"></span> Delete
-    </a>
-    <a href="@Url.Action("Index")" class="btn btn-default btn-lg">
-        <span class="glyphicon glyphicon-step-backward"></span> Back
-    </a>
-</div>
+    <div class="pad-top">
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="@Url.Action("Edit", new { id = Model.Event.Id })" class="btn btn-primary btn-lg margin-right">
+                <span class="glyphicon glyphicon-edit"></span> Edit
+            </a>
+            <a href="@Url.Action("Delete", new { id = Model.Event.Id })" class="btn btn-danger btn-lg margin-right">
+                <span class="glyphicon glyphicon-trash"></span> Delete
+            </a>
+        }
+            <a href="@Url.Action("Index")" class="btn btn-default btn-lg">
+                <span class="glyphicon glyphicon-step-backward"></span> Back
+            </a>
+        </div>

@@ -51,21 +51,25 @@ namespace NCTUWebApp.Controllers
         public ActionResult Add(TeamTeamMembersAddViewModel viewModel)
         {
             ValidateTeamTeamMember(viewModel);
-
-            if (ModelState.IsValid)
+            if (TempData["Error"] == null)
             {
-                var ttm = new TeamTeamMember()
+                if (ModelState.IsValid)
                 {
-                    TeamId = viewModel.TeamId,
-                    TeamMemberId = viewModel.TeamMemberId,
-                    RoleId = viewModel.RoleId
-                };
-                _teamTeamMemberRepository.Add(ttm);
+                    var ttm = new TeamTeamMember()
+                    {
+                        TeamId = viewModel.TeamId,
+                        TeamMemberId = viewModel.TeamMemberId,
+                        RoleId = viewModel.RoleId
+                    };
+                    _teamTeamMemberRepository.Add(ttm);
 
-                TempData["Message"] = "Your team member was successfully added!";
+                    TempData["Message"] = "Your team member was successfully added!";
 
-                return RedirectToAction("Detail", "Teams", new { id = viewModel.TeamId });
+                    return RedirectToAction("Detail", "Teams", new { id = viewModel.TeamId });
+
+                }
             }
+            
             
             viewModel.Team = _teamsRepository.Get(viewModel.TeamId);
             viewModel.Init(Repository, _teamMembersRepository);
@@ -108,8 +112,13 @@ namespace NCTUWebApp.Controllers
         /// <param name="viewModel">The view model containing the values to validate.</param>
         private void ValidateTeamTeamMember(TeamTeamMembersAddViewModel viewModel)
         {
-            // If there aren't any "TeamMemberId" and "RoleId" field validation errors...
-            if (ModelState.IsValidField("TeamMemberId") &&
+
+            if (viewModel.Team.TeamMembers.Count() >= viewModel.Team.Event.TeamSizeLimit)
+            {
+                TempData["Error"] = "This team can't have more players, it's full!";
+            }
+                // If there aren't any "TeamMemberId" and "RoleId" field validation errors...
+                if (ModelState.IsValidField("TeamMemberId") &&
                 ModelState.IsValidField("RoleId"))
             {
                 // Then make sure that this team member and role combination 

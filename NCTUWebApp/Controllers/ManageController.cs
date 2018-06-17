@@ -10,7 +10,7 @@ using NCTUWebApp.Models;
 
 namespace NCTUWebApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;

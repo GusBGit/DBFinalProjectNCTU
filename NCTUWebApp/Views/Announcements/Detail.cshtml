@@ -9,14 +9,18 @@
     <p>@Model.Description</p>
 }
 
-<div class="pad-top">
-    <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-lg margin-right">
-        <span class="glyphicon glyphicon-edit"></span> Edit
-    </a>
-    <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-danger btn-lg margin-right">
-        <span class="glyphicon glyphicon-trash"></span> Delete
-    </a>
-    <a href="@Url.Action("Index")" class="btn btn-default btn-lg">
-        <span class="glyphicon glyphicon-step-backward"></span> Back
-    </a>
-</div>
+    <div class="pad-top">
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary btn-lg margin-right">
+                <span class="glyphicon glyphicon-edit"></span> Edit
+            </a>
+            <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-danger btn-lg margin-right">
+                <span class="glyphicon glyphicon-trash"></span> Delete
+            </a>
+        }
+        <a href="@Url.Action("Index")" class="btn btn-default btn-lg">
+                <span class="glyphicon glyphicon-step-backward"></span> Back
+        </a>
+    </div>

@@ -13,6 +13,8 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary("The following errors were found:", new { @class = "alert alert-danger" })
+    @Html.Partial("_Message");
+
 
     <div class="form-group">
         @Html.LabelFor(m => m.TeamMemberId, new { @class = "control-label" })
